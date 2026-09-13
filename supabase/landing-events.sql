@@ -14,3 +14,9 @@ on public.landing_events
 for insert
 to anon
 with check (true);
+
+create policy "Authenticated users can view landing-page events"
+on public.landing_events
+for select
+to authenticated
+using (true);
