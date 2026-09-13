@@ -85,7 +85,7 @@ export default function StaticAdmin() {
     const interactions = rows.filter((row) => ['click', 'scroll', 'engagement'].includes(row.action)).length;
 
     return <main className="admin-page"><div className="admin-shell">
-        {token ? <><a href="/" style={{ color: '#176b42', fontWeight: 700 }}>← Kembali ke landing page</a>
+        {token ? <><a href="/" style={{ color: '#d70808', fontWeight: 700 }}>← Kembali ke landing page</a>
         <h1 style={{ marginBottom: 8 }}>Full Bright — Analytics</h1>
         <p style={{ color: '#666', marginTop: 0 }}>Riwayat klik CTA dari landing page.</p></> : null}
         {!token ? <LoginScreen email={email} password={password} loading={loading} message={message} onEmail={setEmail} onPassword={setPassword} onSubmit={login} /> : <>
