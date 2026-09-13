@@ -26,7 +26,7 @@ foreach ($directory in @('storage/framework/cache/data', 'storage/framework/sess
     New-Item -ItemType Directory -Path (Join-Path $core $directory) -Force | Out-Null
 }
 Copy-Item (Join-Path $root 'artisan'), (Join-Path $root 'composer.json'), (Join-Path $root 'composer.lock') $core
-Copy-Item (Join-Path $root 'deploy/infinityfree/.env') (Join-Path $core '.env')
+Copy-Item (Join-Path $root 'deploy/infinityfree/env.template') (Join-Path $core '.env')
 Copy-Item (Join-Path $root 'deploy/infinityfree/database.sql') $output
 
 $appKey = (php artisan key:generate --show).Trim()
