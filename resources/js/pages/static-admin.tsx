@@ -22,6 +22,10 @@ function request(path: string, init: RequestInit = {}) {
     });
 }
 
+function LoginScreen({ email, password, loading, message, onEmail, onPassword, onSubmit }: { email: string; password: string; loading: boolean; message: string; onEmail: (value: string) => void; onPassword: (value: string) => void; onSubmit: (event: FormEvent) => void }) {
+    return <section className="fb-login-page"><div className="fb-login-shell"><aside className="fb-login-visual"><img className="fb-login-logo" src="/assets/Logo-Fullbright.webp" alt="Full Bright Indonesia" /><h1>Data yang lebih jelas, keputusan yang lebih tepat.</h1><p>Pantau performa campaign dan interaksi calon peserta langsung dari satu dashboard.</p><img className="fb-login-figure" src="/assets/hero-consultant.png" alt="Konsultan Full Bright" /><span className="fb-login-caption">CTWA Analytics · Full Bright Indonesia</span></aside><section className="fb-login-panel"><div className="fb-login-form"><div className="admin-brand"><span className="admin-mark">F</span>Full Bright <span className="admin-muted">/ Analytics</span></div><h2>Hai, selamat datang kembali</h2><p>Masukkan akun admin untuk melanjutkan.</p><form onSubmit={onSubmit}><label>Email admin<input required type="email" placeholder="nama@contoh.com" value={email} onChange={(event) => onEmail(event.target.value)} /></label><label>Password<input required type="password" placeholder="Masukkan kata sandi" value={password} onChange={(event) => onPassword(event.target.value)} /></label>{message && <div className="admin-alert">{message}</div>}<div className="fb-login-help"><span>Area khusus administrator</span><a href="/">Kembali ke website</a></div><button className="admin-btn primary" disabled={loading}>{loading ? 'Memverifikasi...' : 'Masuk'}</button></form><p className="fb-login-note">Dengan melanjutkan, Anda menyetujui penggunaan sistem analytics Full Bright Indonesia secara bertanggung jawab.</p></div></section></div></section>;
+}
+
 export default function StaticAdmin() {
     const [token, setToken] = useState(() => localStorage.getItem(tokenKey) ?? '');
     const [email, setEmail] = useState('');
@@ -81,14 +85,10 @@ export default function StaticAdmin() {
     const interactions = rows.filter((row) => ['click', 'scroll', 'engagement'].includes(row.action)).length;
 
     return <main className="admin-page"><div className="admin-shell">
-        <a href="/" style={{ color: '#d70808', fontWeight: 700 }}>← Kembali ke landing page</a>
+        {token ? <><a href="/" style={{ color: '#176b42', fontWeight: 700 }}>← Kembali ke landing page</a>
         <h1 style={{ marginBottom: 8 }}>Full Bright — Analytics</h1>
-        <p style={{ color: '#666', marginTop: 0 }}>Riwayat klik CTA dari landing page.</p>
-        {!token ? <form onSubmit={login} style={{ maxWidth: 390, display: 'grid', gap: 12, marginTop: 28 }}>
-            <input required type="email" placeholder="Email admin" value={email} onChange={(e) => setEmail(e.target.value)} style={{ padding: 12 }} />
-            <input required type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ padding: 12 }} />
-            <button disabled={loading} style={{ padding: 12, background: '#d70808', color: '#fff', border: 0, borderRadius: 6, fontWeight: 700 }}>{loading ? 'Memproses...' : 'Masuk'}</button>
-        </form> : <>
+        <p style={{ color: '#666', marginTop: 0 }}>Riwayat klik CTA dari landing page.</p></> : null}
+        {!token ? <LoginScreen email={email} password={password} loading={loading} message={message} onEmail={setEmail} onPassword={setPassword} onSubmit={login} /> : <>
             <div style={{ display: 'flex', gap: 10, margin: '24px 0' }}>
                 <button onClick={() => void loadRows()} disabled={loading}>Muat ulang</button>
                 <button onClick={logout}>Keluar</button>
