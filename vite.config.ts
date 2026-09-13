@@ -29,9 +29,16 @@ export default defineConfig({
             },
         }),
         tailwindcss(),
-        wayfinder({
-            formVariants: true,
-        }),
+        // Vercel runs the Vite build in a Node.js environment, where PHP is
+        // unavailable. The generated Wayfinder files are committed for that
+        // build; generation remains enabled for local development.
+        ...(process.env.VERCEL
+            ? []
+            : [
+                  wayfinder({
+                      formVariants: true,
+                  }),
+              ]),
         // Add Gzip and Brotli compression
         compression({ algorithm: 'gzip', exclude: [/\.(br)$/, /\.(gz)$/] }),
         compression({ algorithm: 'brotliCompress', exclude: [/\.(br)$/, /\.(gz)$/] }),
