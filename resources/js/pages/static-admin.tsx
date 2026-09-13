@@ -53,6 +53,46 @@ export default function StaticAdmin() {
 
     useEffect(() => { void loadRows(); }, []);
 
+    useEffect(() => {
+        if (!token) return;
+
+        const sidebar = document.createElement('aside');
+        sidebar.className = 'fb-real-sidebar';
+        sidebar.innerHTML = `
+            <a class="fb-side-brand" href="/"><img src="/assets/Logo-Fullbright.webp" alt="Full Bright Indonesia"></a>
+            <nav aria-label="Navigasi analytics">
+                <button class="active" data-target="dashboard"><span>⌂</span>Dashboard</button>
+                <button data-target="analytics"><span>⌁</span>Analytics</button>
+                <button data-target="events"><span>◷</span>Event Log</button>
+                <button data-target="settings"><span>⚙</span>Pengaturan</button>
+            </nav>
+            <a class="fb-side-landing" href="/"><span>↑</span><b>Landing Page</b><small>Pantau performa website secara real-time.</small></a>
+        `;
+        document.body.appendChild(sidebar);
+
+        const onClick = (event: Event) => {
+            const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-target]');
+            if (!button) return;
+
+            sidebar.querySelectorAll('button').forEach((item) => item.classList.remove('active'));
+            button.classList.add('active');
+            const target = button.dataset.target;
+            if (target === 'settings') {
+                setMessage('Pengaturan database dan akun admin dikelola melalui dashboard Supabase.');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+            const selector = target === 'dashboard' ? '.admin-shell' : target === 'analytics' ? 'div[style*="flex-wrap"]' : 'div[style*="overflowX"]';
+            document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        sidebar.addEventListener('click', onClick);
+        return () => {
+            sidebar.removeEventListener('click', onClick);
+            sidebar.remove();
+        };
+    }, [token]);
+
     const login = async (event: FormEvent) => {
         event.preventDefault();
         setLoading(true);
