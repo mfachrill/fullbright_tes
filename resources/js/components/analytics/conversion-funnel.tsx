@@ -29,7 +29,7 @@ function Transition({ value }: { value: number | null }) {
             <span
                 className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${color}`}
             >
-                {formatPercent(value)} retained
+                {formatPercent(value)} bertahan
             </span>
         </div>
     );
@@ -45,7 +45,7 @@ function Stage({ stage, index }: { stage: FunnelStage; index: number }) {
                     </span>
                     {stage.from_event && (
                         <span className="ml-2 text-xs text-muted-foreground">
-                            from {stage.from_event.replaceAll('_', ' ')}
+                            dari {stage.from_event.replaceAll('_', ' ')}
                         </span>
                     )}
                 </div>
@@ -54,7 +54,7 @@ function Stage({ stage, index }: { stage: FunnelStage; index: number }) {
                         {formatNumber(stage.value)}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                        {formatPercent(stage.percentage)} of visits
+                        {formatPercent(stage.percentage)} dari kunjungan
                     </span>
                 </div>
             </div>
@@ -76,7 +76,7 @@ export function ConversionFunnel({ stages }: { stages: FunnelStage[] }) {
         <section className="analytics-panel rounded-xl border border-border/50 bg-card/30 p-6 backdrop-blur-sm transition hover:border-primary/30">
             <div className="mb-6">
                 <h2 className="text-lg font-semibold text-foreground">
-                    Conversion Funnel
+                    Funnel Konversi CTWA
                 </h2>
                 <p className="text-sm text-muted-foreground">
                     Strict journey: setiap tahap hanya menghitung sesi yang
@@ -94,7 +94,7 @@ export function ConversionFunnel({ stages }: { stages: FunnelStage[] }) {
             {branches.length > 0 && (
                 <div className="mt-5 border-t border-border/50 pt-5">
                     <p className="mb-3 text-center text-xs font-medium tracking-wider text-muted-foreground uppercase">
-                        CTWA outcome branches
+                        Hasil konversi CTWA
                     </p>
                     <div className="grid gap-4 sm:grid-cols-2">
                         {branches.map((stage, index) => (

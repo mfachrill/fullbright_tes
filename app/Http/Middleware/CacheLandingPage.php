@@ -17,7 +17,9 @@ class CacheLandingPage
 
     public function handle(Request $request, Closure $next): Response
     {
-        $isLandingPage = $request->routeIs('home', 'demo.*');
+        // Home includes visitor-specific Inertia props and query-driven pricing.
+        // Reusing its HTML would share identities and return the wrong pricing mode.
+        $isLandingPage = $request->routeIs('demo.*');
 
         if (! $request->isMethod('GET') || $request->user() || ! $isLandingPage) {
             return $next($request);

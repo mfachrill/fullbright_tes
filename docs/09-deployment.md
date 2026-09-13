@@ -2,6 +2,22 @@
 
 Deployment adalah proses memindahkan aplikasi ke server yang melayani pengguna nyata. Contoh ini ditujukan untuk VPS dengan CyberPanel/OpenLiteSpeed, tetapi prinsipnya berlaku untuk web server lain.
 
+Repository juga menyediakan `Dockerfile` dan `docker-compose.yml`. Keduanya menjalankan aplikasi web dan scheduler sebagai service terpisah, sehingga landing page, autentikasi, admin, database session, serta analytics tetap berada dalam satu aplikasi Laravel.
+
+## Deployment dengan Docker
+
+Siapkan `.env` production dan database MySQL terlebih dahulu. Pastikan `APP_URL` menggunakan domain HTTPS production, `APP_DEBUG=false`, serta `SESSION_DRIVER=database` dan `CACHE_STORE=database`.
+
+Build lalu jalankan application container dan scheduler:
+
+```bash
+docker compose up -d --build
+docker compose exec app php artisan migrate --force
+docker compose exec app php artisan pbm:create-admin
+```
+
+Aplikasi tersedia pada port `8080` secara default. Letakkan reverse proxy HTTPS di depan container dan arahkan domain ke port tersebut. Service `scheduler` menjalankan `php artisan schedule:work`, sehingga pengarsipan analytics tetap aktif.
+
 ## Arsitektur production minimum
 
 - Domain dengan HTTPS.

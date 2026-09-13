@@ -5,6 +5,7 @@
 /public/fonts-manifest.dev.json
 /public/hot
 /public/storage
+/public/dev-router.php
 /storage/*.key
 /storage/pail
 /resources/js/actions
@@ -29,3 +30,5 @@ yarn-error.log
 /.zed
 new/
 admin.md
+/NEW.mp4
+/assets/

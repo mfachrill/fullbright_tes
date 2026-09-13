@@ -7,15 +7,17 @@ use App\Http\Controllers\HeartbeatController;
 use App\Http\Controllers\LabsController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\PaymentCallbackController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    $mode = (string) config('analytics.mode');
+Route::get('/', function (Request $request) {
     $number = preg_replace('/\D+/', '', (string) config('analytics.whatsapp_number'));
     $whatsappUrl = $number ? 'https://wa.me/'.$number.'?text='.urlencode((string) config('analytics.whatsapp_default_message')) : '#pricing';
 
-    return Inertia::render("demo/{$mode}", [
+    return Inertia::render('fullbright/LP', [
+        'initialPricingMode' => $request->query('mode') === 'tutor' ? 'tutor' : 'self',
         'whatsappUrl' => $whatsappUrl,
         'externalCheckoutUrl' => config('analytics.external_checkout_url'),
         'paymentMode' => config('analytics.payment_mode'),
@@ -28,6 +30,17 @@ Route::middleware('throttle:120,1')->group(function () {
     Route::post('/analytics/track', [AnalyticsController::class, 'track'])->name('analytics.track');
     Route::post('/analytics/heartbeat', HeartbeatController::class)->name('analytics.heartbeat');
 });
+
+Route::get('/internal/cron/analytics-archive', function (Request $request) {
+    $secret = (string) config('analytics.cron_secret', '');
+    $authorization = (string) $request->header('Authorization', '');
+
+    abort_if($secret === '' || ! hash_equals('Bearer '.$secret, $authorization), 403);
+
+    Artisan::call('analytics:archive');
+
+    return response()->json(['status' => 'ok']);
+})->name('internal.cron.analytics-archive');
 
 if (config('analytics.mode') === 'form') {
     Route::post('/lead', [LeadController::class, 'store'])->middleware('throttle:20,1')->name('lead.store');

@@ -1,0 +1,16 @@
+.git
+.github
+.env
+.env.*
+!.env.example
+node_modules
+vendor
+public/build
+public/hot
+public/dev-router.php
+storage/logs
+storage/framework/cache
+storage/framework/sessions
+storage/framework/testing
+NEW.mp4
+assets

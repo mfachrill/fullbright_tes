@@ -22,7 +22,7 @@ export function ReferralChart({ rows }: { rows: ReferralRow[] }) {
     return (
         <Card className="border-border/50 bg-card/30 backdrop-blur-sm">
             <CardHeader>
-                <CardTitle>Referral Sources</CardTitle>
+                <CardTitle>Sumber Kunjungan</CardTitle>
             </CardHeader>
             <CardContent>
                 {rows.length === 0 ? (

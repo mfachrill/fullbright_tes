@@ -1,11 +1,12 @@
 import { usePage } from '@inertiajs/react';
-import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, MouseEvent, ReactNode, Ref } from 'react';
 import { resolveCtaEvent } from '@/analytics/event-types';
 import type { CtaAction, CtaZone } from '@/analytics/event-types';
 import { track } from '@/analytics/tracker';
 import type { TrackingProps } from '@/types/analytics';
 
 type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'onClick'> & {
+    ref?: Ref<HTMLAnchorElement>;
     zone: CtaZone;
     action: CtaAction;
     label: string;

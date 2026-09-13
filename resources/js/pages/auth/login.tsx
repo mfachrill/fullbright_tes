@@ -1,4 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
+import { ShieldCheck } from 'lucide-react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
@@ -23,7 +24,7 @@ export default function Login({ status, canResetPassword }: Props) {
             <Form
                 {...store.form()}
                 resetOnSuccess={['password']}
-                className="flex flex-col gap-6"
+                className="fullbright-auth-form flex flex-col gap-6"
             >
                 {({ processing, errors }) => (
                     <>
@@ -39,23 +40,13 @@ export default function Login({ status, canResetPassword }: Props) {
                                     tabIndex={1}
                                     autoComplete="email"
                                     placeholder="email@example.com"
+                                    className="border-[#dedbd6] bg-white text-[#151515] placeholder:text-[#9a9791] focus-visible:border-[#D70808] focus-visible:ring-[#D70808]/15"
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
-                                    {canResetPassword && (
-                                        <TextLink
-                                            href={request()}
-                                            className="ml-auto text-sm"
-                                            tabIndex={5}
-                                        >
-                                            Forgot your password?
-                                        </TextLink>
-                                    )}
-                                </div>
+                                <Label htmlFor="password">Password</Label>
                                 <PasswordInput
                                     id="password"
                                     name="password"
@@ -63,29 +54,45 @@ export default function Login({ status, canResetPassword }: Props) {
                                     tabIndex={2}
                                     autoComplete="current-password"
                                     placeholder="Password"
+                                    className="border-[#dedbd6] bg-white text-[#151515] placeholder:text-[#9a9791] focus-visible:border-[#D70808] focus-visible:ring-[#D70808]/15"
                                 />
                                 <InputError message={errors.password} />
                             </div>
 
-                            <div className="flex items-center space-x-3">
-                                <Checkbox
-                                    id="remember"
-                                    name="remember"
-                                    tabIndex={3}
-                                />
-                                <Label htmlFor="remember">Remember me</Label>
+                            <div className="flex items-center justify-between gap-3">
+                                <div className="flex items-center space-x-3">
+                                    <Checkbox
+                                        id="remember"
+                                        name="remember"
+                                        tabIndex={3}
+                                    />
+                                    <Label htmlFor="remember">Ingat saya</Label>
+                                </div>
+                                {canResetPassword && (
+                                    <TextLink
+                                        href={request()}
+                                        className="text-sm font-medium text-[#D70808] hover:text-[#b90707]"
+                                        tabIndex={5}
+                                    >
+                                        Lupa password?
+                                    </TextLink>
+                                )}
                             </div>
 
                             <Button
                                 type="submit"
-                                className="mt-4 w-full"
+                                className="mt-4 w-full bg-[#D70808] hover:bg-[#b90707]"
                                 tabIndex={4}
                                 disabled={processing}
                                 data-test="login-button"
                             >
                                 {processing && <Spinner />}
-                                Log in
+                                Masuk ke Dashboard
                             </Button>
+                            <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+                                <ShieldCheck className="size-3.5 text-[#D70808]" />
+                                Akses khusus administrator Fullbright
+                            </div>
                         </div>
                     </>
                 )}
@@ -101,6 +108,6 @@ export default function Login({ status, canResetPassword }: Props) {
 }
 
 Login.layout = {
-    title: 'Log in to your account',
-    description: 'Enter your email and password below to log in',
+    title: 'Masuk ke Dashboard',
+    description: 'Gunakan akun administrator untuk melihat performa CTWA.',
 };

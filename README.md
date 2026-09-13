@@ -42,6 +42,8 @@ Istilah lainnya tersedia di [Glosarium](docs/00-glossary.md).
 
 Untuk production, siapkan juga scheduler/cron, HTTPS, dan web server yang document root-nya mengarah ke folder `public`.
 
+Untuk deployment paling stabil, gunakan VPS/Forge atau container Docker yang tersedia melalui `Dockerfile` dan `docker-compose.yml`. Konfigurasi Vercel tersedia sebagai jalur eksperimental karena Laravel berjalan melalui runtime PHP komunitas; baca [panduan Vercel](docs/13-vercel-experimental.md) sebelum menggunakannya.
+
 ## 1. Pilih mode project
 
 Pilih satu baris yang paling sesuai:

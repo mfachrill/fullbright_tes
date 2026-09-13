@@ -1,0 +1,13 @@
+/* Keep the recruiter's light landing page independent of the admin theme. */
+:root:has(.fullbright-page) {
+    --background: #fff;
+    --foreground: #151515;
+    color-scheme: light;
+}
+.fullbright-page {
+    color: #151515;
+    color-scheme: light;
+}
+.fullbright-page section[id] {
+    scroll-margin-top: 120px;
+}

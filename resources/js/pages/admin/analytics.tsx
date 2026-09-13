@@ -9,6 +9,7 @@ import {
     Target,
     TrendingUp,
     Users,
+    MessageCircle,
 } from 'lucide-react';
 import { EVENT_TYPES } from '@/analytics/event-types';
 import { ConversionFunnel } from '@/components/analytics/conversion-funnel';
@@ -85,27 +86,27 @@ export default function Analytics(props: AnalyticsPageProps) {
 
     const commonCards = [
         {
-            title: 'Total Visits',
+            title: 'Total Kunjungan',
             value: formatNumber(stats.visits),
-            description: `${formatNumber(stats.page_views)} page views`,
+            description: `${formatNumber(stats.page_views)} halaman dibuka`,
             icon: Eye,
         },
         {
             title: 'Engagement Rate',
             value: formatPercent(stats.engagement_rate, 2),
-            description: `${formatNumber(stats.engagements)} engaged sessions`,
+            description: `${formatNumber(stats.engagements)} sesi terlibat`,
             icon: Activity,
         },
         {
-            title: 'Intent Rate',
+            title: 'Minat CTA',
             value: formatPercent(stats.intent_rate, 2),
-            description: `${formatNumber(stats.intents)} intent sessions`,
+            description: `${formatNumber(stats.intents)} sesi klik CTA`,
             icon: MousePointerClick,
         },
         {
             title: 'Bounce Rate',
             value: formatPercent(stats.bounce_rate, 2),
-            description: `${formatNumber(stats.bounces)} bounced sessions`,
+            description: `${formatNumber(stats.bounces)} sesi tanpa interaksi`,
             icon: TrendingUp,
         },
     ];
@@ -115,19 +116,19 @@ export default function Analytics(props: AnalyticsPageProps) {
                   {
                       title: label(EVENT_TYPES.whatsappLead),
                       value: formatNumber(stats.whatsapp_leads),
-                      description: `${formatPercent(stats.whatsapp_rate, 2)} of visits`,
-                      icon: Users,
+                      description: `${formatPercent(stats.whatsapp_rate, 2)} dari kunjungan`,
+                      icon: MessageCircle,
                   },
                   {
                       title: label(EVENT_TYPES.directCheckout),
                       value: formatNumber(stats.direct_checkouts),
-                      description: `${formatPercent(stats.direct_checkout_rate, 2)} of visits`,
+                      description: `${formatPercent(stats.direct_checkout_rate, 2)} dari kunjungan`,
                       icon: ShoppingCart,
                   },
                   {
-                      title: 'Total Lead',
+                      title: 'Total Lead CTWA',
                       value: formatNumber(stats.total_leads),
-                      description: 'Unique WhatsApp + checkout sessions',
+                      description: 'Sesi unik WhatsApp + checkout',
                       icon: Target,
                   },
                   {
@@ -184,13 +185,17 @@ export default function Analytics(props: AnalyticsPageProps) {
                     <div className="flex w-full max-w-[1600px] flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                         <div>
                             <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-                                Analytics Dashboard
+                                Fullbright Analytics
                             </h1>
                             <p className="mt-1 text-sm text-muted-foreground">
-                                Monitor funnel performance and visitor behavior.
+                                Pantau performa landing page TOEFL dan konversi CTWA.
                             </p>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-300/25 bg-cyan-400/10 px-3 py-2 text-xs font-semibold text-cyan-200">
+                                <MessageCircle className="size-3.5" />
+                                Mode CTWA aktif
+                            </span>
                             <Select
                                 value={String(props.range)}
                                 onValueChange={changeRange}
@@ -225,11 +230,10 @@ export default function Analytics(props: AnalyticsPageProps) {
                     <section>
                         <div className="mb-4">
                             <h2 className="text-lg font-semibold">
-                                Key Metrics
+                                Ringkasan Performa
                             </h2>
                             <p className="text-sm text-muted-foreground">
-                                Distinct sessions from the last {props.range}{' '}
-                                days.
+                                Sesi unik dalam {props.range} hari terakhir.
                             </p>
                         </div>
                         <div className="analytics-metrics-grid grid gap-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-5">
@@ -247,11 +251,11 @@ export default function Analytics(props: AnalyticsPageProps) {
                     <ConversionFunnel stages={props.funnel} />
 
                     <section className="analytics-panel rounded-xl border border-border/50 bg-card/30 p-6 backdrop-blur-sm">
-                        <h2 className="text-lg font-semibold">Key Insights</h2>
+                        <h2 className="text-lg font-semibold">Insight Utama</h2>
                         <div className="mt-4 grid gap-4 md:grid-cols-3">
                             <div className="analytics-subpanel rounded-lg border border-border/50 bg-muted/20 p-4">
                                 <p className="text-xs tracking-wide text-muted-foreground uppercase">
-                                    Top Referral Source
+                                    Sumber Referral Teratas
                                 </p>
                                 <p className="mt-2 truncate font-semibold">
                                     {props.insights.top_referral.source}
@@ -260,14 +264,14 @@ export default function Analytics(props: AnalyticsPageProps) {
                                     {formatNumber(
                                         props.insights.top_referral.visits,
                                     )}{' '}
-                                    visits
+                                    kunjungan
                                 </p>
                             </div>
                             <div className="analytics-subpanel rounded-lg border border-border/50 bg-muted/20 p-4">
                                 <p className="text-xs tracking-wide text-muted-foreground uppercase">
                                     {props.mode === 'ctwa'
-                                        ? 'Primary CTWA Channel'
-                                        : 'Lead Conversion'}
+                                        ? 'Kanal CTWA Utama'
+                                        : 'Konversi Lead'}
                                 </p>
                                 <p className="mt-2 font-semibold">
                                     {props.mode === 'ctwa'
@@ -287,7 +291,7 @@ export default function Analytics(props: AnalyticsPageProps) {
                                 <p className="text-xs tracking-wide text-muted-foreground uppercase">
                                     {tracking.capabilities.revenue
                                         ? 'Revenue per Visit'
-                                        : 'Data Retention'}
+                                        : 'Retensi Data'}
                                 </p>
                                 <p className="mt-2 font-semibold">
                                     {tracking.capabilities.revenue
@@ -295,7 +299,7 @@ export default function Analytics(props: AnalyticsPageProps) {
                                         : `${props.retentionDays} days`}
                                 </p>
                                 <p className="text-sm text-muted-foreground">
-                                    Older telemetry remains in archive.
+                                    Data lebih lama tersimpan di arsip.
                                 </p>
                             </div>
                         </div>

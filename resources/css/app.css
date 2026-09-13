@@ -1,6 +1,9 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* The unmodified recruiter backup is not a runtime Tailwind source. */
+@source not '../../LP.tsx';
+
 /* Prevent fonts from blocking initial render */
 @layer base {
     @font-face {
@@ -897,6 +900,35 @@
 .analytics-workspace ::-webkit-scrollbar-thumb:hover {
     background: rgb(255 255 255 / 0.28);
     background-clip: padding-box;
+}
+
+/* The app honors the system dark preference. The Fullbright login is
+   intentionally a light surface, so controls must not inherit dark ink. */
+.fullbright-auth {
+    color-scheme: light;
+}
+
+.fullbright-auth-form label {
+    color: #27231f;
+    font-weight: 650;
+}
+
+.fullbright-auth-form [data-slot='input'] {
+    color: #151515;
+    caret-color: #d70808;
+}
+
+.fullbright-auth-form [data-slot='input']::placeholder {
+    color: #9a9791;
+    opacity: 1;
+}
+
+.fullbright-auth-form button[type='button'] {
+    color: #6b7280;
+}
+
+.fullbright-auth-form button[type='button']:hover {
+    color: #151515;
 }
 
 @layer base {

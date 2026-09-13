@@ -24,6 +24,7 @@ return [
     'section_view_enabled' => (bool) env('ANALYTICS_SECTION_VIEW_ENABLED', true),
     'minimum_winner_visits' => (int) env('ANALYTICS_MINIMUM_WINNER_VISITS', 30),
     'retention_days' => min(90, max(1, (int) env('ANALYTICS_RETENTION_DAYS', 90))),
+    'cron_secret' => env('CRON_SECRET'),
     'primary_metric' => $mode === 'form' ? EventType::Lead->value : 'total_lead',
     'capabilities' => [
         EventType::Payment->value => $mode === 'form' && $paymentMode === 'internal',

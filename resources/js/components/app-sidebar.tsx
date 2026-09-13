@@ -45,12 +45,12 @@ export function AppSidebar() {
         ...(isAdmin
             ? [
                   {
-                      title: 'Analytics',
+                      title: 'Ringkasan',
                       href: '/admin',
                       icon: LineChart,
                   },
                   {
-                      title: 'A/B Labs',
+                      title: 'Optimasi Landing',
                       href: '/admin/labs',
                       icon: FlaskConical,
                   },

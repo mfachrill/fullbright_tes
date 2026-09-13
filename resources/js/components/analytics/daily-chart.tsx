@@ -22,7 +22,7 @@ export function DailyChart({
     return (
         <Card className="border-border/50 bg-card/30 backdrop-blur-sm">
             <CardHeader>
-                <CardTitle>Funnel Trends</CardTitle>
+                <CardTitle>Tren Event Landing Page</CardTitle>
             </CardHeader>
             <CardContent>
                 {rows.length === 0 ? (
