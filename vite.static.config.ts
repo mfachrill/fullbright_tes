@@ -11,4 +11,13 @@ export default defineConfig({
         compression({ algorithm: 'brotliCompress', exclude: [/\.(br)$/, /\.(gz)$/] }),
     ],
     resolve: { alias: { '@': '/resources/js' } },
+    build: {
+        rollupOptions: {
+            input: {
+                landing: 'index.html',
+                admin: 'admin/index.html',
+                login: 'login/index.html',
+            },
+        },
+    },
 });

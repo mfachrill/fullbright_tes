@@ -32,6 +32,8 @@ if (window.location.pathname !== '/admin') {
 
 createRoot(document.getElementById('app')!).render(
     <StrictMode>
-        {window.location.pathname === '/admin' ? <StaticAdmin /> : <LandingPage />}
+        {['/admin', '/admin/', '/login', '/login/'].includes(window.location.pathname)
+            ? <StaticAdmin />
+            : <LandingPage />}
     </StrictMode>,
 );
