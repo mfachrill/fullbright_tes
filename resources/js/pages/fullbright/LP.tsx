@@ -1,7 +1,7 @@
-import { Head } from '@/components/static-head';
+import { Head } from '@inertiajs/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
-import { StaticTrackedCTA as TrackedCTA } from '@/components/tracking/StaticTrackedCTA';
+import { TrackedCTA } from '@/components/tracking/TrackedCTA';
 import '../../../css/fullbright.css';
 
 /* ============================================================
