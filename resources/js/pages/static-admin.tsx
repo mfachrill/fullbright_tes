@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
+import '../../css/static-admin.css';
 
 type EventRow = {
     id: number;
@@ -79,7 +80,7 @@ export default function StaticAdmin() {
     const whatsapp = rows.filter((row) => row.action === 'whatsapp').length;
     const interactions = rows.filter((row) => ['click', 'scroll', 'engagement'].includes(row.action)).length;
 
-    return <main style={{ maxWidth: 1100, margin: '0 auto', padding: '48px 20px', fontFamily: 'system-ui, sans-serif', color: '#171717' }}>
+    return <main className="admin-page"><div className="admin-shell">
         <a href="/" style={{ color: '#d70808', fontWeight: 700 }}>← Kembali ke landing page</a>
         <h1 style={{ marginBottom: 8 }}>Full Bright — Analytics</h1>
         <p style={{ color: '#666', marginTop: 0 }}>Riwayat klik CTA dari landing page.</p>
@@ -98,5 +99,5 @@ export default function StaticAdmin() {
             <div style={{ overflowX: 'auto' }}><table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}><thead><tr>{['Waktu', 'Area', 'Aksi', 'Label'].map((text) => <th key={text} style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #ddd' }}>{text}</th>)}</tr></thead><tbody>{rows.map((row) => <tr key={row.id}><td style={{ padding: 10, borderBottom: '1px solid #eee', whiteSpace: 'nowrap' }}>{new Date(row.created_at).toLocaleString('id-ID')}</td><td style={{ padding: 10, borderBottom: '1px solid #eee' }}>{row.zone}</td><td style={{ padding: 10, borderBottom: '1px solid #eee' }}>{row.action}</td><td style={{ padding: 10, borderBottom: '1px solid #eee' }}>{row.label}</td></tr>)}</tbody></table></div>
         </>}
         {message && <p style={{ color: '#d70808', marginTop: 18 }}>{message}</p>}
-    </main>;
+    </div></main>;
 }
