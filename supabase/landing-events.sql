@@ -9,6 +9,9 @@ create table if not exists public.landing_events (
 
 alter table public.landing_events enable row level security;
 
+drop policy if exists "Anyone can record a landing-page event" on public.landing_events;
+drop policy if exists "Authenticated users can view landing-page events" on public.landing_events;
+
 create policy "Anyone can record a landing-page event"
 on public.landing_events
 for insert

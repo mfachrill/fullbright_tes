@@ -75,6 +75,10 @@ export default function StaticAdmin() {
         setRows([]);
     };
 
+    const visits = rows.filter((row) => row.action === 'visit').length;
+    const whatsapp = rows.filter((row) => row.action === 'whatsapp').length;
+    const interactions = rows.filter((row) => ['click', 'scroll', 'engagement'].includes(row.action)).length;
+
     return <main style={{ maxWidth: 1100, margin: '0 auto', padding: '48px 20px', fontFamily: 'system-ui, sans-serif', color: '#171717' }}>
         <a href="/" style={{ color: '#d70808', fontWeight: 700 }}>← Kembali ke landing page</a>
         <h1 style={{ marginBottom: 8 }}>Full Bright — Analytics</h1>
@@ -88,7 +92,9 @@ export default function StaticAdmin() {
                 <button onClick={() => void loadRows()} disabled={loading}>Muat ulang</button>
                 <button onClick={logout}>Keluar</button>
             </div>
-            <p><strong>{rows.length}</strong> event terbaru</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, margin: '20px 0' }}>
+                {[['Total event', rows.length], ['Page visit', visits], ['Klik WhatsApp', whatsapp], ['Interaksi', interactions]].map(([label, value]) => <div key={String(label)} style={{ minWidth: 145, padding: 16, border: '1px solid #eee', borderRadius: 8 }}><small>{label}</small><strong style={{ display: 'block', fontSize: 26 }}>{value}</strong></div>)}
+            </div>
             <div style={{ overflowX: 'auto' }}><table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}><thead><tr>{['Waktu', 'Area', 'Aksi', 'Label'].map((text) => <th key={text} style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #ddd' }}>{text}</th>)}</tr></thead><tbody>{rows.map((row) => <tr key={row.id}><td style={{ padding: 10, borderBottom: '1px solid #eee', whiteSpace: 'nowrap' }}>{new Date(row.created_at).toLocaleString('id-ID')}</td><td style={{ padding: 10, borderBottom: '1px solid #eee' }}>{row.zone}</td><td style={{ padding: 10, borderBottom: '1px solid #eee' }}>{row.action}</td><td style={{ padding: 10, borderBottom: '1px solid #eee' }}>{row.label}</td></tr>)}</tbody></table></div>
         </>}
         {message && <p style={{ color: '#d70808', marginTop: 18 }}>{message}</p>}
