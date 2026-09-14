@@ -1,7 +1,35 @@
 import { Head } from '@inertiajs/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
 import { TrackedCTA } from '@/components/tracking/TrackedCTA';
+import { formatCountdown, flashRemainingMs } from './flash-sale';
+import {
+    FAQ_CATEGORIES,
+    REVIEW_COUNT,
+    RETURN_OPTIONS,
+    RETURN_SUBTEXTS,
+    RETURN_WA_MSGS,
+    reviewSrc,
+    waUrl,
+    WA_SCREENSHOTS,
+} from './landing-data';
+import type { PricingMode } from './landing-data';
+import {
+    catBtnStyle,
+    cmpHeaderStyle,
+    css,
+    faqChevStyle,
+    faqItemStyle,
+    faqQStyle,
+    gSideStyle,
+    KEYFRAMES,
+    lbImgStyle,
+    navStyle,
+    rpOptStyle,
+    rvImgStyle,
+    surveyMsgStyle,
+    surveyOptStyle,
+    toggleBtnStyle,
+} from './landing-styles';
 import '../../../css/fullbright.css';
 
 /* ============================================================
@@ -10,199 +38,6 @@ import '../../../css/fullbright.css';
    utility classes (arbitrary properties keep the design 1:1).
    Assets live in public/assets/ and are referenced as /assets/*
    ============================================================ */
-
-const WA_NUMBER = '6285255499299';
-const waUrl = (text: string): string =>
-    `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
-
-const FLASH_WINDOW_MS = 12 * 60 * 60 * 1000;
-let memoryFlashStart = 0;
-function flashDeadline(): number {
-    try {
-        const stored = Number(localStorage.getItem('fb_flash_start') || 0);
-
-        if (Number.isFinite(stored) && stored > 0) {
-            return stored + FLASH_WINDOW_MS;
-        }
-
-        memoryFlashStart ||= Date.now();
-        localStorage.setItem('fb_flash_start', String(memoryFlashStart));
-    } catch {
-        memoryFlashStart ||= Date.now();
-    }
-
-    return memoryFlashStart + FLASH_WINDOW_MS;
-}
-function flashRemainingMs(): number {
-    if (typeof window === 'undefined') {
-        return FLASH_WINDOW_MS;
-    }
-
-    return Math.max(0, flashDeadline() - Date.now());
-}
-function formatCountdown(ms: number): string {
-    const t = Math.floor(ms / 1000);
-    const h = String(Math.floor(t / 3600)).padStart(2, '0');
-    const m = String(Math.floor((t % 3600) / 60)).padStart(2, '0');
-    const s = String(t % 60).padStart(2, '0');
-
-    return `${h}:${m}:${s}`;
-}
-
-type PricingMode = 'self' | 'tutor';
-
-const WA_SCREENSHOTS: { src: string; score: string }[] = [
-    { src: '/assets/toefl1.webp', score: '547' },
-    { src: '/assets/toefl2.webp', score: '543' },
-    { src: '/assets/toefl3.webp', score: '563' },
-    { src: '/assets/toefl4.webp', score: '560' },
-    { src: '/assets/toefl5.webp', score: '507' },
-    { src: '/assets/toefl6.webp', score: '513' },
-    { src: '/assets/toefl7.webp', score: '537' },
-    { src: '/assets/toefl9.webp', score: '560' },
-];
-
-const REVIEW_COUNT = 19;
-const reviewSrc = (i: number): string => `/assets/Riview (${i + 1}).webp`;
-
-const RETURN_OPTIONS: string[] = [
-    'Harganya masih terlalu mahal buatku',
-    'Belum yakin bisa mencapai target TOEFL-ku',
-    'Belum yakin program ini cocok untuk kebutuhanku',
-    'Masih membandingkan dengan program lain',
-];
-
-const RETURN_WA_MSGS: string[] = [
-    'Halo Admin Full Bright Indonesia. Saya mau konsultasi soal paket dan harga sebelum daftar.',
-    'Halo Admin Full Bright Indonesia. Saya mau konsultasi soal metode belajar dan hasil yang bisa dicapai sebelum daftar.',
-    'Halo Admin Full Bright Indonesia. Saya mau konsultasi apakah program ini cocok dengan kebutuhan saya sebelum daftar.',
-    'Halo Admin Full Bright Indonesia. Saya masih membandingkan dengan program lain, mau tanya-tanya dulu.',
-];
-
-const RETURN_SUBTEXTS: string[] = [
-    'Ada yang ingin ditanyakan soal harga atau paket?',
-    'Mau tahu apakah program ini cocok untuk target skor kamu?',
-    'Konsultasikan dulu apakah program ini cocok untukmu.',
-    'Masih membandingkan? Tanya tim kami tentang programnya.',
-];
-
-const FAQ_CATEGORIES: string[] = [
-    'Belajar Mandiri (LMS)',
-    'Metode & Efektivitas',
-    'Dibimbing Tutor',
-    'Sertifikat & Legalitas',
-    'Pendaftaran & Pembayaran',
-    'Jaminan & Garansi',
-];
-
-const FAQ_ITEM_CATEGORIES: string[] = [
-    'Belajar Mandiri (LMS)',
-    'Belajar Mandiri (LMS)',
-    'Belajar Mandiri (LMS)',
-    'Belajar Mandiri (LMS)',
-    'Belajar Mandiri (LMS)',
-    'Metode & Efektivitas',
-    'Metode & Efektivitas',
-    'Metode & Efektivitas',
-    'Metode & Efektivitas',
-    'Metode & Efektivitas',
-    'Dibimbing Tutor',
-    'Dibimbing Tutor',
-    'Dibimbing Tutor',
-    'Sertifikat & Legalitas',
-    'Sertifikat & Legalitas',
-    'Pendaftaran & Pembayaran',
-    'Jaminan & Garansi',
-];
-
-/** Turns a CSS declaration string into a React style object (used for values that change at runtime). */
-function css(decl: string): CSSProperties {
-    const out: Record<string, string> = {};
-    decl.split(';').forEach((part) => {
-        const chunk = part.trim();
-
-        if (!chunk) {
-            return;
-        }
-
-        const at = chunk.indexOf(':');
-
-        if (at < 0) {
-            return;
-        }
-
-        const prop = chunk.slice(0, at).trim();
-        const value = chunk.slice(at + 1).trim();
-        const key = prop.startsWith('--')
-            ? prop
-            : prop.replace(/-([a-z])/g, (_m, c: string) => c.toUpperCase());
-        out[key] = value;
-    });
-
-    return out as CSSProperties;
-}
-
-const navStyle = (scrolled: boolean, bannerH: number): string =>
-    `position:sticky;top:${bannerH}px;z-index:50;transition:all 0.3s;border-bottom:1px solid #f3f4f6;` +
-    (scrolled
-        ? 'background:rgba(255,255,255,0.95);box-shadow:0 4px 12px rgba(0,0,0,0.08);backdrop-filter:blur(8px);'
-        : 'background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);');
-
-const cmpHeaderStyle = (bannerH: number): string =>
-    `position:sticky;top:${bannerH + 64}px;z-index:20;display:grid;grid-template-columns:1.5fr 0.85fr 0.85fr 0.9fr;background:#F9F9F9;border-bottom:1px solid #ececec;border-radius:20px 20px 0 0;align-items:stretch;overflow:hidden;`;
-
-const toggleBtnStyle = (active: boolean): string =>
-    `position:relative;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;padding:12px 26px;border-radius:9999px;transition:all 0.2s ease;background:${active ? '#D70808' : 'transparent'};color:${active ? '#fff' : '#6b7280'};box-shadow:${active ? '0 4px 14px rgba(215,8,8,0.28)' : 'none'};text-decoration:${active ? 'none' : 'underline dotted'};text-underline-offset:4px;text-decoration-thickness:2px;`;
-
-const catBtnStyle = (active: boolean): string =>
-    `cursor:pointer;font-size:12px;font-weight:700;padding:8px 16px;border-radius:9999px;border:1.5px solid #D70808;background:${active ? '#D70808' : '#fff'};color:${active ? '#fff' : '#D70808'};`;
-
-const faqItemStyle = (activeCat: string | null, i: number): string =>
-    `border-bottom:1px solid #f3f4f6;display:${activeCat === null || activeCat === FAQ_ITEM_CATEGORIES[i] ? 'block' : 'none'};`;
-
-const faqQStyle = (open: boolean): string =>
-    `font-size:14px;font-weight:700;line-height:1.4;font-family:'Nunito',sans-serif;color:${open ? '#D70808' : '#151515'};`;
-
-const faqChevStyle = (open: boolean): string =>
-    `flex-shrink:0;margin-top:2px;font-size:14px;color:${open ? '#D70808' : '#151515'};transform:${open ? 'rotate(180deg)' : 'rotate(0deg)'};display:inline-block;`;
-
-const surveyOptStyle = (selected: boolean): string =>
-    `display:flex;align-items:center;gap:10px;width:100%;min-height:48px;text-align:left;padding:10px 12px;border-radius:9px;cursor:pointer;background:${selected ? 'rgba(215,8,8,0.05)' : '#fff'};border:1px solid ${selected ? 'rgba(215,8,8,0.3)' : '#e5e5e5'};transition:all 0.15s ease;font-family:inherit;`;
-
-const rpOptStyle = (): string =>
-    'display:flex;align-items:center;gap:10px;width:100%;min-height:54px;text-align:left;padding:12px 14px;border-radius:12px;cursor:pointer;background:#fff;border:1px solid #e5e5e5;transition:all 0.15s ease;font-family:inherit;box-sizing:border-box;';
-
-const surveyMsgStyle = (answered: boolean): string =>
-    `margin:8px 0 0;min-height:16px;font-size:12px;font-weight:600;color:#6b7280;opacity:${answered ? 1 : 0};transition:opacity 0.25s ease;`;
-
-const lbImgStyle = (i: number | null): string =>
-    `height:80vh;width:340px;max-width:80vw;border-radius:16px;background-image:url('${WA_SCREENSHOTS[i ?? 0].src}');background-size:contain;background-repeat:no-repeat;background-position:center;box-shadow:0 24px 80px rgba(0,0,0,0.6);`;
-
-const rvImgStyle = (i: number | null): string =>
-    `height:85vh;width:400px;max-width:90vw;border-radius:16px;background-image:url('${reviewSrc(i ?? 0)}');background-size:contain;background-repeat:no-repeat;background-position:center;box-shadow:0 24px 80px rgba(0,0,0,0.6);`;
-
-const gSideStyle = (side: 'prev' | 'next', gIdx: number): string => {
-    const idx =
-        side === 'prev'
-            ? (gIdx - 1 + REVIEW_COUNT) % REVIEW_COUNT
-            : (gIdx + 1) % REVIEW_COUNT;
-    const left = side === 'prev' ? 'calc(50% - 260px)' : 'calc(50% + 100px)';
-
-    return `position:absolute;transition:all 0.6s ease;cursor:pointer;overflow:hidden;border-radius:16px;background-image:url('${reviewSrc(idx)}');background-size:cover;background-position:center;left:${left};width:160px;height:210px;opacity:0.5;z-index:1;box-shadow:0 8px 28px rgba(0,0,0,0.18);`;
-};
-
-const KEYFRAMES = `
-  @layer base {
-  .fullbright-page { margin: 0; font-family: 'Nunito', system-ui, sans-serif; }
-  .fullbright-page :where(h1, h2, h3, h4, h5, h6, p, span, div, li, a, button, input, select, textarea, ul, ol, strong, b, em, i, label) { font-family: 'Nunito', system-ui, sans-serif; }
-  .fullbright-page a { color: #D70808; }
-  .fullbright-page a:hover { color: #b30606; }
-  }
-  @keyframes infiniteScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  @keyframes fbFadeInUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes fbSheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  @keyframes heroBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
-`;
 
 export default function LandingPage({
     initialPricingMode = 'self',

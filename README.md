@@ -1,6 +1,6 @@
 # PBM Landing Page Boilerplate
 
-Boilerplate ini adalah fondasi siap pakai untuk membuat landing page dengan Laravel, Inertia, React, analytics internal, dashboard A/B testing, dan integrasi marketing. **Boilerplate** berarti project dasar yang dapat disalin dan disesuaikan untuk klien baru tanpa membangun sistem pendukung dari awal.
+Boilerplate ini adalah fondasi siap pakai untuk membuat landing page dengan Laravel, Inertia, React, dan integrasi marketing. **Boilerplate** berarti project dasar yang dapat disalin dan disesuaikan untuk klien baru tanpa membangun sistem pendukung dari awal.
 
 Panduan ini berdiri sendiri. Developer tidak perlu mengetahui project lain atau proses pembuatan repository ini untuk mulai menggunakannya.
 
@@ -9,8 +9,6 @@ Panduan ini berdiri sendiri. Developer tidak perlu mengetahui project lain atau 
 - Landing page React yang dirender melalui Inertia.
 - Dua mode konversi: WhatsApp/checkout eksternal (`ctwa`) atau formulir (`form`).
 - Tracking visit, engagement, bounce, intent, scroll, section, lead, dan payment.
-- Dashboard Analytics di `/admin`.
-- Dashboard perbandingan landing page atau A/B Labs di `/admin/labs`.
 - Integrasi opsional Meta Pixel + Conversions API, Google Tag Manager, GA4, dan Microsoft Clarity.
 - Penyimpanan lead, order, serta pembayaran internal melalui Duitku.
 - Scheduler, pengarsipan analytics, test suite, dan workflow deployment GitHub Actions.
@@ -42,7 +40,7 @@ Istilah lainnya tersedia di [Glosarium](docs/00-glossary.md).
 
 Untuk production, siapkan juga scheduler/cron, HTTPS, dan web server yang document root-nya mengarah ke folder `public`.
 
-Untuk deployment paling stabil, gunakan VPS/Forge atau container Docker yang tersedia melalui `Dockerfile` dan `docker-compose.yml`. Konfigurasi Vercel tersedia sebagai jalur eksperimental karena Laravel berjalan melalui runtime PHP komunitas; baca [panduan Vercel](docs/13-vercel-experimental.md) sebelum menggunakannya.
+Untuk deployment paling stabil, gunakan VPS/Forge atau container Docker yang tersedia melalui `Dockerfile` dan `docker-compose.yml`. Untuk demo PHP/MySQL gratis, gunakan [panduan InfinityFree](docs/14-infinityfree-deployment.md).
 
 ## 1. Pilih mode project
 
@@ -113,8 +111,6 @@ Perintah `pbm:create-admin` akan meminta nama, email, dan password admin. Setela
 |---|---|
 | `http://localhost:8000` | Landing page |
 | `http://localhost:8000/login` | Login admin |
-| `http://localhost:8000/admin` | Dashboard Analytics |
-| `http://localhost:8000/admin/labs` | Dashboard A/B Labs |
 | `http://localhost:8000/admin/orders` | Order mode FORM |
 
 Jika ingin mengisi dashboard dengan data contoh, jalankan `php artisan db:seed --class=AnalyticsDemoSeeder`. Jangan menjalankan seeder data contoh pada production.
@@ -194,6 +190,8 @@ php artisan config:cache
 
 ## 5. Cara analytics bekerja
 
+Untuk deployment PHP/MySQL gratis di InfinityFree, gunakan branch `infinityfree-laravel` dan baca [panduan InfinityFree](docs/14-infinityfree-deployment.md). Branch tersebut sengaja tidak memakai konfigurasi static Vercel maupun Supabase.
+
 Tracking otomatis dimulai ketika halaman Inertia dimuat. Developer tidak perlu menulis kode tambahan untuk visit, durasi aktif, scroll, atau section view.
 
 - Sesi dimulai sebagai bounce.
@@ -250,7 +248,6 @@ Kemudian ikuti [Checklist QA](docs/11-qa-checklist.md) pada staging. **Staging**
 6. [Google Tag Manager, GA4, dan Clarity](docs/05-gtm-ga4-clarity.md)
 7. [Payment Duitku](docs/06-duitku-payment.md)
 8. [Mode Project](docs/07-project-modes.md)
-9. [Membaca Dashboard](docs/08-dashboard-guide.md)
 10. [Deployment Production](docs/09-deployment.md)
 11. [Troubleshooting](docs/10-troubleshooting.md)
 12. [Checklist QA](docs/11-qa-checklist.md)

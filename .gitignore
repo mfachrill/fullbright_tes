@@ -6,6 +6,9 @@
 /public/hot
 /public/storage
 /public/dev-router.php
+/dist
+/deploy/infinityfree/*.zip
+/deploy/infinityfree/upload*/
 /storage/*.key
 /storage/pail
 /resources/js/actions
